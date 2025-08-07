@@ -18,6 +18,10 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				primary: ['Inter', 'sans-serif'],
+				display: ['Crimson Pro', 'serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -52,16 +56,37 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
+				// WWII Timeline custom colors
+				military: {
+					olive: 'hsl(var(--military-olive))',
+					'olive-light': 'hsl(var(--olive-light))',
+				},
+				sepia: {
+					dark: 'hsl(var(--sepia-dark))',
+					medium: 'hsl(var(--sepia-medium))',
+					light: 'hsl(var(--sepia-light))',
+				},
+				amber: {
+					highlight: 'hsl(var(--amber-highlight))',
+					glow: 'hsl(var(--amber-glow))',
+				},
+				vintage: {
+					paper: 'hsl(var(--vintage-paper))',
+				},
+				metal: {
+					dark: 'hsl(var(--metal-dark))',
+					light: 'hsl(var(--metal-light))',
 				}
+			},
+			backgroundImage: {
+				'gradient-hero': 'var(--gradient-hero)',
+				'gradient-timeline': 'var(--gradient-timeline)',
+				'gradient-accent': 'var(--gradient-accent)',
+			},
+			boxShadow: {
+				'vintage': 'var(--shadow-vintage)',
+				'glow': 'var(--shadow-glow)',
+				'deep': 'var(--shadow-deep)',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
