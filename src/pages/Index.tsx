@@ -3,9 +3,11 @@ import { Card } from "@/components/ui/card";
 import Timeline from "@/components/ui/timeline";
 import { sampleWWIIEvents } from "@/data/sampleEvents";
 import { Film, Clock, BookOpen, Zap } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-background.jpg";
 
 const Index = () => {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -35,7 +37,11 @@ const Index = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button size="lg" className="bg-military-olive hover:bg-olive-light text-foreground font-semibold px-8 py-4 rounded-lg shadow-vintage hover:shadow-glow transition-all duration-300">
+            <Button 
+              size="lg" 
+              onClick={() => navigate('/timeline')}
+              className="bg-military-olive hover:bg-olive-light text-foreground font-semibold px-8 py-4 rounded-lg shadow-vintage hover:shadow-glow transition-all duration-300"
+            >
               <Film className="mr-2 h-5 w-5" />
               Explorar Timeline
             </Button>
