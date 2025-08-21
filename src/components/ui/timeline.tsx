@@ -2,6 +2,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 
 interface TimelineEvent {
+  id?: string;
   year: string;
   date: string;
   title: string;
@@ -42,7 +43,7 @@ const Timeline: React.FC<TimelineProps> = ({ events, className }) => {
       
       <div className="space-y-12">
         {events.map((event, index) => (
-          <div key={`${event.year}-${index}`} className="relative flex items-start">
+          <div key={event.id || `${event.year}-${index}`} className="relative flex items-start">
             {/* Timeline dot */}
             <div className="absolute left-6 w-4 h-4 rounded-full bg-amber-highlight border-2 border-background shadow-glow animate-timeline-pulse"></div>
             

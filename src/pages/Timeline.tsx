@@ -1,11 +1,13 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import GitTimeline from "@/components/ui/git-timeline";
-import { sampleWWIIEvents } from "@/data/sampleEvents";
-import { Search, Filter, Calendar, Film, ArrowLeft } from "lucide-react";
+import { eventsService, type TimelineEvent } from "@/lib/firestore";
+import { migrateDataToFirestore } from "@/utils/migrateData";
+import { FirebaseSetupBanner } from "@/components/FirebaseSetupBanner";
+import { Search, Filter, Calendar, Film, ArrowLeft, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Timeline = () => {
@@ -14,10 +16,59 @@ const Timeline = () => {
   const [movieSearch, setMovieSearch] = useState("");
   const [selectedPeriod, setSelectedPeriod] = useState("all");
   const [selectedType, setSelectedType] = useState("all");
+  const [events, setEvents] = useState<TimelineEvent[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [usingLocalData, setUsingLocalData] = useState(false);
+
+  // Carregar eventos do Firebase
+  useEffect(() => {
+    const loadEvents = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Tentar carregar eventos do Firebase
+        let firebaseEvents;
+        try {
+          firebaseEvents = await eventsService.getEvents();
+        } catch (firebaseError) {
+          if (firebaseError.code === 'permission-denied') {
+            console.warn('⚠️ Permissões do Firestore não configuradas. Usando dados locais temporariamente.');
+            // Fallback para dados locais
+            const { sampleWWIIEvents } = await import('@/data/sampleEvents');
+            setEvents(sampleWWIIEvents);
+            setUsingLocalData(true);
+            setLoading(false);
+            return;
+          } else {
+            throw firebaseError;
+          }
+        }
+        
+        // Se não há eventos, fazer a migração
+        if (firebaseEvents.length === 0) {
+          console.log('Nenhum evento encontrado no Firebase. Iniciando migração...');
+          await migrateDataToFirestore();
+          const migratedEvents = await eventsService.getEvents();
+          setEvents(migratedEvents);
+        } else {
+          setEvents(firebaseEvents);
+        }
+      } catch (err) {
+        console.error('Erro ao carregar eventos:', err);
+        setError('Erro ao carregar eventos do banco de dados');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadEvents();
+  }, []);
 
   // Filter events based on search criteria
   const filteredEvents = useMemo(() => {
-    return sampleWWIIEvents.filter(event => {
+    return events.filter(event => {
       const matchesSearch = searchTerm === "" || 
         event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         event.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -38,9 +89,9 @@ const Timeline = () => {
 
   // Get unique years for period filter
   const periods = useMemo(() => {
-    const years = sampleWWIIEvents.map(event => event.year);
+    const years = events.map(event => event.year);
     return [...new Set(years)].sort();
-  }, []);
+  }, [events]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -122,7 +173,7 @@ const Timeline = () => {
           {/* Results Summary */}
           <div className="mt-4 flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
-              Mostrando {filteredEvents.length} de {sampleWWIIEvents.length} eventos
+              Mostrando {filteredEvents.length} de {events.length} eventos
             </p>
             {(searchTerm || movieSearch || selectedPeriod !== "all" || selectedType !== "all") && (
               <Button
@@ -145,7 +196,38 @@ const Timeline = () => {
 
       {/* Timeline Content */}
       <main className="max-w-7xl mx-auto px-6 py-8">
-        {filteredEvents.length > 0 ? (
+        {usingLocalData && <FirebaseSetupBanner />}
+        {loading ? (
+          <Card className="bg-card border-sepia-medium p-12 text-center">
+            <div className="max-w-md mx-auto">
+              <Loader2 className="h-12 w-12 animate-spin mx-auto mb-4 text-amber-highlight" />
+              <h3 className="text-xl font-display font-semibold mb-2">
+                Carregando eventos...
+              </h3>
+              <p className="text-muted-foreground">
+                Conectando com o banco de dados Firebase
+              </p>
+            </div>
+          </Card>
+        ) : error ? (
+          <Card className="bg-card border-sepia-medium p-12 text-center">
+            <div className="max-w-md mx-auto">
+              <div className="text-4xl mb-4">⚠️</div>
+              <h3 className="text-xl font-display font-semibold mb-2 text-destructive">
+                Erro ao carregar dados
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                {error}
+              </p>
+              <Button 
+                onClick={() => window.location.reload()}
+                className="bg-military-olive hover:bg-olive-light"
+              >
+                Tentar novamente
+              </Button>
+            </div>
+          </Card>
+        ) : filteredEvents.length > 0 ? (
           <GitTimeline events={filteredEvents} />
         ) : (
           <Card className="bg-card border-sepia-medium p-12 text-center">
