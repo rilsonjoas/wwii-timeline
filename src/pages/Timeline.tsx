@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import HorizontalTimeline from "@/components/ui/horizontal-timeline";
+import GitTimeline from "@/components/ui/git-timeline";
 import { sampleWWIIEvents } from "@/data/sampleEvents";
 import { Search, Filter, Calendar, Film, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -146,7 +146,7 @@ const Timeline = () => {
       {/* Timeline Content */}
       <main className="max-w-7xl mx-auto px-6 py-8">
         {filteredEvents.length > 0 ? (
-          <HorizontalTimeline events={filteredEvents} />
+          <GitTimeline events={filteredEvents} />
         ) : (
           <Card className="bg-card border-sepia-medium p-12 text-center">
             <div className="max-w-md mx-auto">
