@@ -42,3 +42,33 @@ export const getFirebaseInfo = () => {
   console.log('- Project ID:', db.app.options.projectId);
   console.log('- Auth Domain:', db.app.options.authDomain);
 };
+
+export const testEventsCollection = async () => {
+  try {
+    console.log('🔍 Testando coleção "events"...');
+    
+    const eventsCollection = collection(db, 'events');
+    const snapshot = await getDocs(eventsCollection);
+    
+    console.log('📊 Estatísticas da coleção:');
+    console.log('- Documentos encontrados:', snapshot.size);
+    console.log('- Collection vazia?', snapshot.empty);
+    
+    if (!snapshot.empty) {
+      console.log('📄 Documentos encontrados:');
+      snapshot.docs.forEach((doc, index) => {
+        const data = doc.data();
+        console.log(`  ${index + 1}. ID: ${doc.id}`);
+        console.log(`     Título: ${data.title || 'SEM TÍTULO'}`);
+        console.log(`     Ano: ${data.year || 'SEM ANO'}`);
+        console.log(`     Tipo: ${data.type || 'SEM TIPO'}`);
+        console.log(`     Data: ${data.date || 'SEM DATA'}`);
+      });
+    }
+    
+    return snapshot.size;
+  } catch (error) {
+    console.error('❌ Erro ao testar coleção events:', error);
+    throw error;
+  }
+};

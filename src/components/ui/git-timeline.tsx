@@ -3,6 +3,10 @@ import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Calendar, Film } from "lucide-react";
+import EnrichedMovieCard from "@/components/ui/enriched-movie-card";
+import { translateEventType } from "@/utils/translations";
+
+import type { EnrichedTimelineEvent } from "@/utils/enrichWithTMDB";
 
 interface TimelineEvent {
   year: string;
@@ -13,6 +17,14 @@ interface TimelineEvent {
     title: string;
     year: number;
     director?: string;
+  }>;
+  enrichedMovies?: Array<{
+    title: string;
+    year: number;
+    director?: string;
+    tmdbData?: any;
+    loading?: boolean;
+    error?: string;
   }>;
   type: 'battle' | 'political' | 'liberation' | 'tragedy';
 }
@@ -37,7 +49,7 @@ const GitTimeline: React.FC<GitTimelineProps> = ({ events, className }) => {
     return acc;
   }, {} as Record<string, Array<TimelineEvent & { originalIndex: number }>>);
 
-  const years = Object.keys(eventsByYear).sort();
+  const years = Object.keys(eventsByYear).sort((a, b) => parseInt(a) - parseInt(b));
   const visibleYears = years.slice(visibleRange.start, visibleRange.end);
 
   const getEventTypeColor = (type: TimelineEvent['type']) => {
@@ -85,8 +97,8 @@ const GitTimeline: React.FC<GitTimelineProps> = ({ events, className }) => {
   };
 
   useEffect(() => {
-    if (timelineRef.current) {
-      timelineRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (timelineRef.current && visibleRange.start > 0) {
+      timelineRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, [visibleRange]);
 
@@ -161,7 +173,7 @@ const GitTimeline: React.FC<GitTimelineProps> = ({ events, className }) => {
                         <div className="absolute -left-14 top-6 w-12 h-0.5 bg-gradient-to-r from-military-olive to-amber-highlight opacity-60"></div>
                         
                         {/* Event node */}
-                        <div className="absolute -left-16 top-4 w-4 h-4 rounded-full bg-gradient-to-r {getEventTypeColor(event.type)} border-2 border-background shadow-glow"></div>
+                        <div className={`absolute -left-16 top-4 w-4 h-4 rounded-full bg-gradient-to-r ${getEventTypeColor(event.type)} border-2 border-background shadow-glow`}></div>
                         
                         {/* Event card */}
                         <Card 
@@ -189,7 +201,7 @@ const GitTimeline: React.FC<GitTimelineProps> = ({ events, className }) => {
                                 getEventTypeColor(event.type),
                                 "text-white"
                               )}>
-                                {event.type}
+                                {translateEventType(event.type)}
                               </div>
                             </div>
                             
@@ -197,25 +209,48 @@ const GitTimeline: React.FC<GitTimelineProps> = ({ events, className }) => {
                               {event.description}
                             </p>
                             
-                            {event.movies && event.movies.length > 0 && (
+                            {((event.enrichedMovies && event.enrichedMovies.length > 0) || (event.movies && event.movies.length > 0)) && (
                               <div className="border-t border-sepia-medium pt-4">
                                 <div className="flex items-center gap-2 mb-2">
                                   <Film className="h-4 w-4 text-amber-highlight" />
                                   <span className="text-sm font-semibold text-amber-highlight">
-                                    {event.movies.length} filme{event.movies.length > 1 ? 's' : ''}
+                                    {(event.enrichedMovies?.length || event.movies?.length || 0)} filme{(event.enrichedMovies?.length || event.movies?.length || 0) > 1 ? 's' : ''}
                                   </span>
+                                  {event.enrichedMovies && (
+                                    <span className="text-xs text-muted-foreground">
+                                      • com dados TMDB
+                                    </span>
+                                  )}
                                 </div>
                                 
                                 {isSelected && (
-                                  <div className="grid gap-2 mt-3">
-                                    {event.movies.map((movie, movieIndex) => (
-                                      <div key={movieIndex} className="flex items-center justify-between p-2 bg-background rounded border border-sepia-medium">
-                                        <span className="text-sm font-medium">{movie.title}</span>
-                                        <span className="text-xs text-muted-foreground">
-                                          {movie.year} • {movie.director}
-                                        </span>
-                                      </div>
-                                    ))}
+                                  <div className="space-y-2 mt-3">
+                                    {event.enrichedMovies ? (
+                                      // Show enriched movies with TMDB data
+                                      event.enrichedMovies.map((movie, movieIndex) => (
+                                        <EnrichedMovieCard
+                                          key={movieIndex}
+                                          title={movie.title}
+                                          year={movie.year}
+                                          director={movie.director}
+                                          tmdbData={movie.tmdbData}
+                                          loading={movie.loading}
+                                          error={movie.error}
+                                          isExpanded={true}
+                                        />
+                                      ))
+                                    ) : (
+                                      // Fallback to basic movie display
+                                      event.movies?.map((movie, movieIndex) => (
+                                        <EnrichedMovieCard
+                                          key={movieIndex}
+                                          title={movie.title}
+                                          year={movie.year}
+                                          director={movie.director}
+                                          isExpanded={true}
+                                        />
+                                      ))
+                                    )}
                                   </div>
                                 )}
                               </div>
@@ -235,14 +270,43 @@ const GitTimeline: React.FC<GitTimelineProps> = ({ events, className }) => {
         <div className="mt-8 bg-card border border-sepia-medium rounded-lg p-4">
           <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
             <span>Progresso da Timeline</span>
-            <span>{Math.round((visibleRange.end / years.length) * 100)}%</span>
+            <span>{Math.round(((visibleRange.start + visibleYears.length) / years.length) * 100)}%</span>
           </div>
           <div className="w-full bg-sepia-medium rounded-full h-2">
             <div 
               className="bg-gradient-to-r from-amber-highlight to-military-olive h-2 rounded-full transition-all duration-300"
-              style={{ width: `${(visibleRange.end / years.length) * 100}%` }}
+              style={{ width: `${((visibleRange.start + visibleYears.length) / years.length) * 100}%` }}
             ></div>
           </div>
+        </div>
+
+        {/* Bottom Navigation */}
+        <div className="mt-8 flex items-center justify-center gap-4">
+          <Button
+            variant="outline"
+            onClick={() => scrollTimeline('left')}
+            disabled={visibleRange.start === 0}
+            className="border-amber-highlight text-amber-highlight hover:bg-amber-highlight hover:text-background"
+          >
+            <ChevronLeft className="h-4 w-4 mr-2" />
+            Anterior
+          </Button>
+          
+          <div className="flex items-center gap-2 text-muted-foreground text-sm">
+            <span>
+              {visibleYears[0]} - {visibleYears[visibleYears.length - 1]}
+            </span>
+          </div>
+          
+          <Button
+            variant="outline"
+            onClick={() => scrollTimeline('right')}
+            disabled={visibleRange.end >= years.length}
+            className="border-amber-highlight text-amber-highlight hover:bg-amber-highlight hover:text-background"
+          >
+            Próximo
+            <ChevronRight className="h-4 w-4 ml-2" />
+          </Button>
         </div>
       </div>
     </div>

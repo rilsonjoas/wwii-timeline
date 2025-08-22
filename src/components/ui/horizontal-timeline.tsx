@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight, Calendar, Film } from "lucide-react";
+import { translateEventType } from "@/utils/translations";
 
 interface TimelineEvent {
   year: string;

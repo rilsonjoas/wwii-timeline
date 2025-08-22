@@ -33,6 +33,7 @@ const Timeline = () => {
         try {
           firebaseEvents = await eventsService.getEvents();
         } catch (firebaseError) {
+          
           if (firebaseError.code === 'permission-denied') {
             console.warn('⚠️ Permissões do Firestore não configuradas. Usando dados locais temporariamente.');
             // Fallback para dados locais
@@ -48,13 +49,15 @@ const Timeline = () => {
         
         // Se não há eventos, fazer a migração
         if (firebaseEvents.length === 0) {
-          console.log('Nenhum evento encontrado no Firebase. Iniciando migração...');
           await migrateDataToFirestore();
           const migratedEvents = await eventsService.getEvents();
           setEvents(migratedEvents);
         } else {
           setEvents(firebaseEvents);
         }
+        
+        setUsingLocalData(false);
+        
       } catch (err) {
         console.error('Erro ao carregar eventos:', err);
         setError('Erro ao carregar eventos do banco de dados');
@@ -65,6 +68,7 @@ const Timeline = () => {
 
     loadEvents();
   }, []);
+
 
   // Filter events based on search criteria
   const filteredEvents = useMemo(() => {
@@ -85,7 +89,7 @@ const Timeline = () => {
       
       return matchesSearch && matchesMovieSearch && matchesPeriod && matchesType;
     });
-  }, [searchTerm, movieSearch, selectedPeriod, selectedType]);
+  }, [events, searchTerm, movieSearch, selectedPeriod, selectedType]);
 
   // Get unique years for period filter
   const periods = useMemo(() => {
