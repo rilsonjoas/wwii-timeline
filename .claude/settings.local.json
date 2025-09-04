@@ -2,7 +2,25 @@
   "permissions": {
     "allow": [
       "Bash(npm install:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Read(/C:\\Users\\rguedes\\Documents\\GitHub\\wwii-timeline/**)",
+      "Read(/C:\\Users\\rguedes\\Documents\\GitHub\\wwii-timeline/**)",
+      "Read(/C:\\Users\\rguedes\\Documents\\GitHub\\wwii-timeline/**)",
+      "Read(/C:\\Users\\rguedes\\Documents\\GitHub\\wwii-timeline/**)",
+      "Read(/C:\\Users\\rguedes\\Documents\\GitHub\\wwii-timeline/**)",
+      "Read(/C:\\Users\\rguedes\\Documents\\GitHub\\wwii-timeline\\src/**)",
+      "Read(/C:\\Users\\rguedes\\Documents\\GitHub\\wwii-timeline\\src/**)",
+      "Read(/C:\\Users\\rguedes\\Documents\\GitHub\\wwii-timeline\\src\\lib/**)",
+      "Read(/C:\\Users\\rguedes\\Documents\\GitHub\\wwii-timeline\\src\\lib/**)",
+      "Bash(npm run:*)",
+      "Read(/C:\\Users\\rguedes\\Documents\\GitHub\\wwii-timeline\\src\\data/**)",
+      "Read(/C:\\Users\\rguedes\\Documents\\GitHub\\wwii-timeline\\src\\pages/**)",
+      "Read(/C:\\Users\\rguedes\\Documents\\GitHub\\wwii-timeline\\src\\components\\ui/**)",
+      "Read(/C:\\Users\\rguedes\\Documents\\GitHub\\wwii-timeline\\src\\components\\ui/**)",
+      "Read(/C:\\Users\\rguedes\\Documents\\GitHub\\wwii-timeline\\src\\components\\ui/**)",
+      "Read(/C:\\Users\\rguedes\\Documents\\GitHub\\wwii-timeline/**)",
+      "Read(/C:\\Users\\rguedes\\Documents\\GitHub\\wwii-timeline\\src\\pages/**)",
+      "Read(/C:\\Users\\rguedes\\Documents\\GitHub\\wwii-timeline\\src\\pages/**)"
     ],
     "deny": [],
     "ask": []

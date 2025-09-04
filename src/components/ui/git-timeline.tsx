@@ -22,7 +22,7 @@ interface TimelineEvent {
     title: string;
     year: number;
     director?: string;
-    tmdbData?: any;
+    tmdbData?: unknown;
     loading?: boolean;
     error?: string;
   }>;

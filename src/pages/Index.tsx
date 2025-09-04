@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import GitTimeline from "@/components/ui/git-timeline";
+import ImmersiveTimeline from "@/components/ui/immersive-timeline";
 import { eventsService, type TimelineEvent } from "@/lib/firestore";
 import { migrateDataToFirestore } from "@/utils/migrateData";
 import { FirebaseSetupBanner } from "@/components/FirebaseSetupBanner";
@@ -418,7 +419,7 @@ const Index = () => {
               </div>
             </Card>
           ) : filteredEvents.length > 0 ? (
-            <GitTimeline events={filteredEvents} />
+            <ImmersiveTimeline events={filteredEvents} />
           ) : (
             <Card className="bg-card border-sepia-medium p-12 text-center">
               <div className="max-w-md mx-auto">
