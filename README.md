@@ -2,8 +2,6 @@
 
 Uma aplicação web interativa que explora a Segunda Guerra Mundial através da perspectiva cinematográfica, conectando filmes e séries aos eventos históricos de 1939-1945.
 
-![WWII Timeline](./src/assets/hero-background.jpg)
-
 ## 📋 Sobre o Projeto
 
 O **WWII Timeline** é uma timeline interativa que combina história e cinema, permitindo aos usuários explorarem os momentos mais marcantes da Segunda Guerra Mundial e descobrirem como esses eventos foram retratados no cinema e na televisão.
@@ -155,8 +153,7 @@ Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalh
 
 ## 👨‍💻 Autor
 
-Desenvolvido com ❤️ por [Seu Nome]
-
+Desenvolvido com ❤️ por Rilson Joás. 
 ---
 
 **WWII Timeline** - Conectando história e cinema para uma experiência educativa única.
