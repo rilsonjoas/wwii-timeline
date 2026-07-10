@@ -1,73 +1,127 @@
-# Welcome to your Lovable project
+# ⏰🎬 WWII Timeline
 
-## Project info
+**Cinema e História da Segunda Guerra Mundial**
 
-**URL**: https://lovable.dev/projects/46224e79-f53d-455f-9290-81e50662d847
+Uma timeline interativa que conecta a história da Segunda Guerra Mundial com suas representações cinematográficas. Explore eventos históricos e descubra filmes e séries que os retratam.
 
-## How can I edit this code?
+## ✨ Funcionalidades
 
-There are several ways of editing your application.
+- 📅 **Timeline Interativa**: Navegue cronologicamente pelos eventos de 1939-1945
+- 🎭 **Conexão Cinema-História**: Descubra filmes e séries relacionados a cada evento
+- 🔍 **Sistema de Busca**: Encontre eventos específicos ou produções audiovisuais
+- 🎯 **Filtros Avançados**: Filtre por ano, tipo de evento, ou gênero cinematográfico
+- 📱 **Interface Responsiva**: Experiência otimizada para todos os dispositivos
+- 🎨 **Design Temático**: Interface com elementos visuais da época
 
-**Use Lovable**
+## 🛠️ Tecnologias Utilizadas
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/46224e79-f53d-455f-9290-81e50662d847) and start prompting.
+- **Frontend**: React 18 com TypeScript
+- **Styling**: Tailwind CSS + shadcn/ui
+- **Build**: Vite
+- **Roteamento**: React Router DOM
+- **Ícones**: Lucide React
+- **Componentes**: Timeline horizontal customizada
+- **Animações**: CSS transitions e transformations
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🚀 Como Executar
 
-**Use your preferred IDE**
+### Pré-requisitos
+- Node.js 18+ 
+- npm ou yarn
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Instalação
+```bash
+# Clone o repositório
+git clone <url-do-repositorio>
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+# Entre no diretório
+cd wwii-timeline
 
-Follow these steps:
+# Instale as dependências
+npm install
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Execute o projeto
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+O projeto estará disponível em `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 📁 Estrutura do Projeto
 
-**Use GitHub Codespaces**
+```
+wwii-timeline/
+├── src/
+│   ├── components/
+│   │   ├── ui/                 # Componentes de UI (shadcn/ui)
+│   │   ├── timeline.tsx        # Componente de timeline vertical
+│   │   └── horizontal-timeline.tsx  # Timeline horizontal
+│   ├── pages/
+│   │   ├── Index.tsx          # Página inicial
+│   │   └── Timeline.tsx       # Página da timeline
+│   ├── data/
+│   │   └── sampleEvents.ts    # Dados dos eventos da WWII
+│   ├── assets/                # Imagens e recursos
+│   └── main.tsx              # Ponto de entrada
+├── public/                    # Arquivos estáticos
+└── index.html                # Template HTML
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🎨 Design System
 
-## What technologies are used for this project?
+### Paleta de Cores
+- **Militar**: Verde oliva (#6B7280, #374151)
+- **Destacue**: Âmbar dourado (#F59E0B)
+- **Gradientes**: Temáticos da época
+- **Background**: Tons neutros históricos
 
-This project is built with:
+### Elementos Visuais
+- Tipografia com fontes display elegantes
+- Gradientes que remetem à era militar
+- Sombras e efeitos vintage
+- Animações suaves e contextuais
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 📖 Scripts Disponíveis
 
-## How can I deploy this project?
+- `npm run dev` - Executa em modo desenvolvimento
+- `npm run build` - Gera build de produção
+- `npm run preview` - Visualiza o build de produção
+- `npm run lint` - Executa linting do código
 
-Simply open [Lovable](https://lovable.dev/projects/46224e79-f53d-455f-9290-81e50662d847) and click on Share -> Publish.
+## 📚 Fontes de Dados
 
-## Can I connect a custom domain to my Lovable project?
+Os eventos históricos e conexões cinematográficas são baseados em:
+- Registros históricos oficiais da Segunda Guerra Mundial
+- Bases de dados de filmes e séries históricas
+- Análise de precisão histórica de produções audiovisuais
 
-Yes, you can!
+## 🤝 Contribuição
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Contribuições são bem-vindas! Especialmente:
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- Adição de novos eventos históricos
+- Conexões com filmes/séries não catalogados
+- Melhorias na timeline interativa
+- Correções históricas
+
+### Como Contribuir
+1. Fork o projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/novo-evento`)
+3. Commit suas mudanças (`git commit -m 'Adiciona evento da Batalha de Stalingrado'`)
+4. Push para a branch (`git push origin feature/novo-evento`)
+5. Abra um Pull Request
+
+## 📝 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+
+## 🎯 Objetivos Educacionais
+
+Este projeto tem como objetivo:
+- Tornar a história da WWII mais acessível através do cinema
+- Conectar entretenimento com educação histórica
+- Promover o pensamento crítico sobre representações históricas
+- Facilitar o estudo chronológico dos eventos
+
+---
+
+**Desenvolvido com 🎖️ para estudantes e entusiastas de história**
